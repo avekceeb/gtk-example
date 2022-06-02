@@ -43,6 +43,30 @@ void create_table(GtkWidget *widget, gpointer data) {
     gtk_widget_show_all(window);
 }
 
+void open_table(GtkWidget *widget, gpointer data) {
+    GtkWidget *dialog;
+    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+    gint res;
+
+    dialog = gtk_file_chooser_dialog_new ("Open File",
+                                        GTK_WINDOW(gtk_widget_get_parent_window(GTK_WIDGET(widget))),
+                                        GTK_FILE_CHOOSER_ACTION_OPEN,
+                                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+                                        GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                        NULL);
+
+    res = gtk_dialog_run (GTK_DIALOG (dialog));
+    if (res == GTK_RESPONSE_ACCEPT) {
+        char *filename;
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+        filename = gtk_file_chooser_get_filename(chooser);
+        // open_file (filename);
+        g_print(filename);
+        g_free (filename);
+    }
+    gtk_widget_destroy (dialog);
+}
+
 int main(int argc, char *argv[]) {
     GtkWidget *vbox;
 
@@ -58,12 +82,17 @@ int main(int argc, char *argv[]) {
     vbox = gtk_vbox_new(TRUE, 5);
     table_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
     
-    GtkWidget *button1 = gtk_button_new_with_label("Update table");
+    GtkWidget *button1 = gtk_button_new_with_label("Random table");
     gtk_widget_set_size_request(button1, 70, 30);
 
+    GtkWidget *button2 = gtk_button_new_with_label("Open table");
+    gtk_widget_set_size_request(button2, 70, 30);
+
     g_signal_connect(G_OBJECT(button1), "clicked", G_CALLBACK(create_table), NULL);
+    g_signal_connect(G_OBJECT(button2), "clicked", G_CALLBACK(open_table), NULL);
 
     gtk_container_add(GTK_CONTAINER(vbox), button1);
+    gtk_container_add(GTK_CONTAINER(vbox), button2);
     gtk_container_add(GTK_CONTAINER(vbox), table_box);
     gtk_container_add(GTK_CONTAINER(window), vbox);
 

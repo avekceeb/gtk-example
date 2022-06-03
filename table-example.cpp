@@ -69,30 +69,38 @@ void open_table(GtkWidget *widget, gpointer data) {
 
 int main(int argc, char *argv[]) {
     GtkWidget *vbox;
+    GtkWidget *bbox;
 
     gtk_init(&argc, &argv);
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
     gtk_widget_set_size_request (window, 300, 250);
-    gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+    gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
+    // gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
     gtk_window_set_title(GTK_WINDOW(window), "::Test GTK3 Table::");
     gtk_container_set_border_width(GTK_CONTAINER(window), 15);
 
-    vbox = gtk_vbox_new(TRUE, 5);
+    vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+    bbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
     table_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
     
     GtkWidget *button1 = gtk_button_new_with_label("Random table");
     gtk_widget_set_size_request(button1, 70, 30);
+    gtk_widget_set_halign(button1, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(button1, GTK_ALIGN_CENTER);
 
     GtkWidget *button2 = gtk_button_new_with_label("Open table");
     gtk_widget_set_size_request(button2, 70, 30);
+    gtk_widget_set_halign(button2, GTK_ALIGN_CENTER);
+    gtk_widget_set_valign(button2, GTK_ALIGN_CENTER);
 
     g_signal_connect(G_OBJECT(button1), "clicked", G_CALLBACK(create_table), NULL);
     g_signal_connect(G_OBJECT(button2), "clicked", G_CALLBACK(open_table), NULL);
 
-    gtk_container_add(GTK_CONTAINER(vbox), button1);
-    gtk_container_add(GTK_CONTAINER(vbox), button2);
+    gtk_container_add(GTK_CONTAINER(bbox), button1);
+    gtk_container_add(GTK_CONTAINER(bbox), button2);
+    gtk_container_add(GTK_CONTAINER(vbox), bbox);
     gtk_container_add(GTK_CONTAINER(vbox), table_box);
     gtk_container_add(GTK_CONTAINER(window), vbox);
 
